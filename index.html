@@ -877,16 +877,43 @@ Remember to cache the <code>uuid</code> within the client for future requests.
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
-| Parameter    | Description                              |
-| ------------ | ---------------------------------------- |
-| prompt_uuid  | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
-| prompt_num   | Index (start=0) of the prompt being answered within an event&#39;s set |
-| displayed_at | IS08601 representation of datetime when app created prompt event |
-| recorded_at  | ISO8601 representation of datetime when user answered prompt event |
-| longitude    | Longitude of where prompt event was created |
-| latitude     | Latitude of where prompt event was created |
-| answer       | List of plain-text strings for the user&#39;s prompt response |</p>
+<p>This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>prompt_uuid</td>
+<td>UUID for each prompt event, prompts displayed at during the same notification should share the same UUID</td>
+</tr>
+<tr>
+<td>prompt_num</td>
+<td>Index (start=0) of the prompt being answered within an event&#39;s set</td>
+</tr>
+<tr>
+<td>displayed_at</td>
+<td>IS08601 representation of datetime when app created prompt event</td>
+</tr>
+<tr>
+<td>recorded_at</td>
+<td>ISO8601 representation of datetime when user answered prompt event</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>Longitude of where prompt event was created</td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>Latitude of where prompt event was created</td>
+</tr>
+<tr>
+<td>answer</td>
+<td>List of plain-text strings for the user&#39;s prompt response</td>
+</tr>
+</tbody></table>
 
 <p>Updated prompts may be resubmitted with the same format as long as the UUID remains consistent with the originally submitted prompt.</p>
 
