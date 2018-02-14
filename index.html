@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Itinerum API Reference</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;python&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,10 +211,7 @@
     <div class="toc-wrapper">
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -225,19 +222,33 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="introduction">Introduction</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="authentication">Authentication</a>
-          </li>
-          <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="kittens">Kittens</a>
+            <a href="#create-a-new-user" class="toc-h1 toc-link" data-title="create-a-new-user">Create a New User</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="get-all-kittens">Get All Kittens</a>
+                    <a href="#http-request" class="toc-h2 toc-link" data-title="http-request">HTTP Request</a>
                   </li>
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="get-a-specific-kitten">Get a Specific Kitten</a>
+                    <a href="#query-parameters" class="toc-h2 toc-link" data-title="query-parameters">Query Parameters</a>
                   </li>
                   <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="delete-a-specific-kitten">Delete a Specific Kitten</a>
+                    <a href="#parsing-the-survey" class="toc-h2 toc-link" data-title="parsing-the-survey">Parsing the Survey</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#updating-the-database" class="toc-h1 toc-link" data-title="updating-the-database">Updating the Database</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#answering-the-survey" class="toc-h2 toc-link" data-title="answering-the-survey">Answering the Survey</a>
+                  </li>
+                  <li>
+                    <a href="#updating-coordinates" class="toc-h2 toc-link" data-title="updating-coordinates">Updating Coordinates</a>
+                  </li>
+                  <li>
+                    <a href="#updating-prompts" class="toc-h2 toc-link" data-title="updating-prompts">Updating Prompts</a>
+                  </li>
+                  <li>
+                    <a href="#updating-cancelled-prompts" class="toc-h2 toc-link" data-title="updating-cancelled-prompts">Updating Cancelled Prompts</a>
                   </li>
               </ul>
           </li>
@@ -246,181 +257,459 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/lord/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='http://itinerum.ca/'>Itinerum Project</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p><strong>Welcome to the Itinerum API!</strong> This documentation describes getting started with the mobile API endpoints for authentication, retrieving survey questions, mode prompts, and uploading user data.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>There are 3 types of requests an application will make:
+1. Initial request where user account is created and survey schema is sent to device
+2. Second POST to server where demographic survey responses are submitted
+3. All subsequent server calls to add new GPS points, prompt responses and cancelled prompts</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/lord/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>Python code examples are located in the dark area to the right.</p>
+<h1 id='create-a-new-user'>Create a New User</h1><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">API_URL</span> <span class="o">+</span> <span class="s">'/create'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"lang"</span><span class="p">:</span> <span class="s">"en"</span><span class="p">,</span>
+    <span class="s">"survey_name"</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+    <span class="s">"user"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"itinerum_version"</span><span class="p">:</span> <span class="s">"12c"</span><span class="p">,</span>
+        <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"7077a34e-afe5-4c22-bd96-119256b7dc51"</span><span class="p">,</span>
+        <span class="s">"os_version"</span><span class="p">:</span> <span class="s">"80.23"</span><span class="p">,</span>
+        <span class="s">"model"</span><span class="p">:</span> <span class="s">"iPhone 4s"</span><span class="p">,</span>
+        <span class="s">"os"</span><span class="p">:</span> <span class="s">"ios"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"lang"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"termsOfService"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terms of service text"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"aboutText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"information about survey instance text"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"contactEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"contact@email.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"maxDays"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown_prompt"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown prompt title"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Choice 2"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox_prompt"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox prompt title"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Choice 2"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"maxPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"numPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"43f8cdaf-3e43-429d-beb2-94e8220a8a06"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"defaultAvatar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/assets/static/defaultAvatar.png"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"surveyName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tester"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"surveyId"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"survey"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"member_type"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your primary occupation?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_mode_work"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"How do you typically commute to your work location?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"6"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_mode_alt_work"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Do you use any alternative mode of travel to work?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"7"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_mode_study"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"How do you typically commute to your studies?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">108</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"6"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_mode_alt_study"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Do you use any alternative mode of travel to your studies?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">109</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"7"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Gender"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your gender?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Age"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your age bracket?"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"5"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown selection title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Choice 2"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox selection title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Choice 2"</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"number"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"number selection title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text field input title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Email"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your email"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_work"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your work location on the map"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">107</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address input title"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_study"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your study location on the map"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">106</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_home"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your home location on the map"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">105</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New user successfully registered."</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"avatar"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
+<p>A new user is created within a survey by supplying a randomly generated UUID to identify the user. This needs to be cached within the app as it is required for future requests. The <code>survey_name</code> corresponds to the name used to signup the survey via the dashboard. The <code>avatar</code> path provides the URI to locate the survey&#39;s avatar icon when joined with the root URL. In the example above, the full path would then be: &quot;http://<api.root.url>/assets/static/avatars/93jf3.jpg&quot;.</p>
 <h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/create</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>user</td>
+<td>Dictionary containing <code>uuid</code>, <code>model</code>, <code>itinerum_version</code>, <code>os</code>, <code>os_version</code></td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>survey_name</td>
+<td>Name of survey to associate the user</td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+<aside class="notice">
+Remember to cache the <code>uuid</code> within the client for future requests.
 </aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id='parsing-the-survey'>Parsing the Survey</h2>
+<p>Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as <code>id</code> within the <em>create user</em> response. The IDs 1-10 correspond to generic input fields, 98-99 are specialty dialogs, and 100-103 are prompts that cannot be deleted on the frontend and will appear in every survey.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th>id</th>
+<th>field names</th>
+<th>description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>1</td>
+<td>choices</td>
+<td>select one</td>
+</tr>
+<tr>
+<td>2</td>
+<td>choices</td>
+<td>select many</td>
+</tr>
+<tr>
+<td>3</td>
+<td>number</td>
+<td>number input</td>
+</tr>
+<tr>
+<td>4</td>
+<td>latitude, longitude</td>
+<td>map/address</td>
+</tr>
+<tr>
+<td>5</td>
+<td>text</td>
+<td>text box</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<table><thead>
+<tr>
+<th>id</th>
+<th><strong>hardcoded fields</strong></th>
+<th>description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>100</td>
+<td>Gender</td>
+<td>gender</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Age</td>
+<td>age</td>
+</tr>
+<tr>
+<td>102</td>
+<td>mode</td>
+<td>primary mode (unuse  d)</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Email</td>
+<td>email</td>
+</tr>
+<tr>
+<td>104</td>
+<td>member_type</td>
+<td>primary occupartion</td>
+</tr>
+<tr>
+<td>105</td>
+<td>location_home</td>
+<td>mark user&#39;s home location on map</td>
+</tr>
+<tr>
+<td>106</td>
+<td>location_study</td>
+<td>mark user&#39;s study location on map</td>
+</tr>
+<tr>
+<td>107</td>
+<td>location_work</td>
+<td>mark user&#39;s work location on map</td>
+</tr>
+<tr>
+<td>108</td>
+<td>travel_mode_study</td>
+<td>primary travel mode to study location</td>
+</tr>
+<tr>
+<td>109</td>
+<td>travel_mode_alt_study</td>
+<td>secondary travel mode to study location</td>
+</tr>
+<tr>
+<td>110</td>
+<td>travel_mode_work</td>
+<td>primary travel mode to work location</td>
+</tr>
+<tr>
+<td>111</td>
+<td>travel_mode_alt_work</td>
+<td>secondary travel mode to work location</td>
+</tr>
+</tbody></table>
+<h1 id='updating-the-database'>Updating the Database</h1><h2 id='answering-the-survey'>Answering the Survey</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"survey"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"checkbox"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s">"Choice 1"</span>
+        <span class="p">],</span>
+        <span class="s">"dropdown"</span><span class="p">:</span> <span class="s">"Choice 2"</span><span class="p">,</span>
+        <span class="s">"Gender"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="s">"travel_mode_work"</span><span class="p">:</span> <span class="s">"5"</span><span class="p">,</span>
+        <span class="s">"address"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-12.5665545"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-41.789760"</span>
+        <span class="p">},</span>
+        <span class="s">"number"</span><span class="p">:</span> <span class="mi">5789</span><span class="p">,</span>
+        <span class="s">"travel_mode_alt_work"</span><span class="p">:</span> <span class="s">"7"</span><span class="p">,</span>
+        <span class="s">"Email"</span><span class="p">:</span> <span class="s">"vpollich@tillman-heathcote.com"</span><span class="p">,</span>
+        <span class="s">"travel_mode_alt_study"</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+        <span class="s">"member_type"</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+        <span class="s">"text"</span><span class="p">:</span> <span class="s">"Cumque nemo occaecati aliquid nam iusto rem itaque. Aperiam saepe itaque quas odit accusantium. Recusandae maiores consequatur esse veniam sequi odit."</span><span class="p">,</span>
+        <span class="s">"location_home"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-14.643098"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-80.968816"</span>
+        <span class="p">},</span>
+        <span class="s">"location_study"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-84.0534215"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"144.383503"</span>
+        <span class="p">},</span>
+        <span class="s">"location_work"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-13.8300325"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"101.956003"</span>
+        <span class="p">},</span>
+        <span class="s">"Age"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="s">"travel_mode_study"</span><span class="p">:</span> <span class="s">"4"</span>
+    <span class="p">},</span>
+    <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"d5f7eb50-6dec-48d1-86ff-ee4b96b583f7"</span>
+<span class="p">}</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MobileUpdateData"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new prompt answers supplied."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"survey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Survey answer for 0eb506b1-0411-4c91-8422-58ad44180272 upserted."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new coordinates data supplied."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint deletes a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<p>This endpoint is shared with updates for coordinates and modeprompts. This follows the design of the original API, however, it now requires only the necessary data to be submitted (i.e., the survey answers do not need to be sent in each request).</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -428,8 +717,253 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>survey</td>
+<td>Dictionary containing the column names from the supplied schema and the user input values</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td>The user&#39;s cached installation uuid</td>
+</tr>
+</tbody></table>
+<h2 id='updating-coordinates'>Updating Coordinates</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"04399688-f7aa-4e7d-aeda-a54de210d843"</span><span class="p">,</span>
+    <span class="s">"coordinates"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.9005850917305266</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.3757285807726195</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5069920593"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:33-04:00"</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">48.07675588398361</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6316462699"</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6462882776492511</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.7147102339936264</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.7981422356509369</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4709612219"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:48-04:00"</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">51.04449870001568</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6011947415"</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.47743632708330497</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.6164638302522808</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.23135915741337032</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5026375686"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:03-04:00"</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">53.47408048034383</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6364625799"</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.11871749871078396</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.8849309929557423</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.2051143438611197</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5138905076"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:18-04:00"</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">33.00381524750525</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6326201573"</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6564783774960729</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.8650806338748424</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.6513500120220839</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4641170882"</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:33-04:00"</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">40.212286896732074</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6115764412"</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.5778861925789305</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">update_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MobileUpdateData"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new prompt answers supplied."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"survey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new survey data supplied."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New coordinates for 96fc430b-284d-45c5-9eef-bd2796a73d31 inserted."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Allows application to record collected GPS points to server. This endpoint is shared with updates for survey responses and may be combined to a single request.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>coordinates</td>
+<td>Array of dictionaries containing GPS update information</td>
+</tr>
+<tr>
+<td>prompts</td>
+<td>(Optional) array of mode prompt responses to record</td>
+</tr>
+<tr>
+<td>user</td>
+<td>Dictionary containing <code>uuid</code> key and value (TODO: change this)</td>
+</tr>
+</tbody></table>
+<h2 id='updating-prompts'>Updating Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"prompt_uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
+            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.5769640073"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4868670481"</span><span class="p">,</span>
+            <span class="s">"answer"</span><span class="p">:</span> <span class="s">"Choice 1"</span><span class="p">,</span>
+            <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"prompt_uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
+            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6179342516"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5205378578"</span><span class="p">,</span>
+            <span class="s">"answer"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Choice A"</span><span class="p">,</span> <span class="s">"Choice C"</span><span class="p">],</span>
+            <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"bb9212b8-a608-48a2-962e-3ecb9632a12b"</span><span class="p">,</span>
+    <span class="s">"coordinates"</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">update_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MobileUpdateData"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New prompt answers for bb9212b8-a608-48a2-962e-3ecb9632a12b inserted."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"survey"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new survey data supplied."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"No new coordinates data supplied."</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
+| Parameter    | Description                              |
+| ------------ | ---------------------------------------- |
+| prompt_uuid  | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
+| prompt_num   | Index (start=0) of the prompt being answered within an event&#39;s set |
+| displayed_at | IS08601 representation of datetime when app created prompt event |
+| recorded_at  | ISO8601 representation of datetime when user answered prompt event |
+| longitude    | Longitude of where prompt event was created |
+| latitude     | Latitude of where prompt event was created |
+| answer       | List of plain-text strings for the user&#39;s prompt response |</p>
+
+<p>Updated prompts may be resubmitted with the same format as long as the UUID remains consistent with the originally submitted prompt.</p>
+
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>coordinates</td>
+<td>(Optional) array of dictionaries containing GPS update informationgitlab</td>
+</tr>
+<tr>
+<td>prompts</td>
+<td>Array of mode prompt responses to record</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td><code>uuid</code> for mobile user</td>
+</tr>
+</tbody></table>
+<h2 id='updating-cancelled-prompts'>Updating Cancelled Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"cancelledPrompts"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"c1d15413-b33d-4aaa-bf84-762517a3284b"</span><span class="p">,</span>
+            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.5769640073"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4868670481"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"e2dd9ab2-f859-4d44-b569-6791a4a2ed7b"</span><span class="p">,</span>
+            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6179342516"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5205378578"</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"bb9212b8-a608-48a2-962e-3ecb9632a12b"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">cancelled_prompts_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+</code></pre>
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"results"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"cancelledPrompts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2 false prompts recorded."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MobileUpdateData"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts can be upgraded by submitting an answered prompt set with the same UUID.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>POST http://api.testing.itinerum.ca/mobile/v1/update</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>cancelledPrompts</td>
+<td>Array of dictionaries containing timestamp and location of cancelled prompt</td>
+</tr>
+<tr>
+<td>uuid</td>
+<td><code>uuid</code> for mobile user</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
@@ -494,10 +1028,7 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
     </div>
