@@ -9,7 +9,7 @@ Project homepage: https://itinerum.ca
 
 
 
-This repository contains the source for the [itinerum-mobile-api](https://github.com/TRIP-Lab/itinerum-mobile-api) generated with [Slate](https://github.com/lord/slate). The documentation should include detailed explanations and examples for how a client should submit data to an instance of the mobile API.
+This repository contains the source for the [itinerum-mobile-api](https://github.com/TRIP-Lab/itinerum-mobile-api) static documentation generated with [Slate](https://github.com/lord/slate). The documentation should include detailed explanations and examples for how a client should submit data to an instance of the mobile API.
 
 
 
