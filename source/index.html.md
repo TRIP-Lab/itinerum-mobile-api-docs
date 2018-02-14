@@ -557,6 +557,7 @@ response = requests.post(update_url, data=parameters)
 ```
 
 This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
+
 | Parameter    | Description                              |
 | ------------ | ---------------------------------------- |
 | prompt_uuid  | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
