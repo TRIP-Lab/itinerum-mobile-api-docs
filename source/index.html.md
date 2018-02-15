@@ -515,7 +515,7 @@ import requests
 test_data = {
     "prompts": [
         {
-            "prompt_uuid": "0dd86866-9e00-474f-a24b-103431254726",
+            "uuid": "0dd86866-9e00-474f-a24b-103431254726",
             "displayed_at": "2017-04-27T08:37:03-04:00",
             "recorded_at": "2017-04-27T08:37:03-04:00",
             "longitude": "-73.5769640073",
@@ -524,7 +524,7 @@ test_data = {
             "prompt_num": 0
         },
         {
-            "prompt_uuid": "0dd86866-9e00-474f-a24b-103431254726",
+            "uuid": "0dd86866-9e00-474f-a24b-103431254726",
             "displayed_at": "2017-04-28T07:24:25-04:00",
             "recorded_at": "2017-04-28T07:24:25-04:00",
             "longitude": "-73.6179342516",
@@ -558,15 +558,15 @@ response = requests.post(update_url, data=parameters)
 
 This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
 
-| Parameter    | Description                              |
-| ------------ | ---------------------------------------- |
-| prompt_uuid  | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
+| Parameter    | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| uuid         | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
 | prompt_num   | Index (start=0) of the prompt being answered within an event's set |
 | displayed_at | IS08601 representation of datetime when app created prompt event |
 | recorded_at  | ISO8601 representation of datetime when user answered prompt event |
-| longitude    | Longitude of where prompt event was created |
-| latitude     | Latitude of where prompt event was created |
-| answer       | List of plain-text strings for the user's prompt response |
+| longitude    | Longitude of where prompt event was created                  |
+| latitude     | Latitude of where prompt event was created                   |
+| answer       | List of plain-text strings for the user's prompt response    |
 
 Updated prompts may be resubmitted with the same format as long as the UUID remains consistent with the originally submitted prompt.
 
@@ -626,7 +626,7 @@ This endpoint records times when a user is prompted about a trip end, but choose
 
 ### HTTP Request
 
-`POST http://api.testing.itinerum.ca/mobile/v1/update`
+`POST http://<api.root.url>/mobile/v1/update`
 
 
 | Parameter        | Description                              |
