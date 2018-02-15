@@ -839,7 +839,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s">"prompt_uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
+            <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.5769640073"</span><span class="p">,</span>
@@ -848,7 +848,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
             <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">0</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s">"prompt_uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
+            <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6179342516"</span><span class="p">,</span>
@@ -886,7 +886,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 </tr>
 </thead><tbody>
 <tr>
-<td>prompt_uuid</td>
+<td>uuid</td>
 <td>UUID for each prompt event, prompts displayed at during the same notification should share the same UUID</td>
 </tr>
 <tr>
@@ -976,7 +976,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 </span></code></pre>
 <p>This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts can be upgraded by submitting an answered prompt set with the same UUID.</p>
 <h3 id='http-request-4'>HTTP Request</h3>
-<p><code>POST http://api.testing.itinerum.ca/mobile/v1/update</code></p>
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
 
 <table><thead>
 <tr>
@@ -994,11 +994,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
-<aside class="notice">
-This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
-</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>Generally the only errors you will receive are 400, 404, 405 or 500. Because the API is overly-forgiving, requests that attempt to create a duplicate user or are otherwise unacceptable will yield 200 indicating it was well formatted but provide a message describing the internal failure.</p>
 
 <table><thead>
 <tr>
@@ -1008,47 +1004,31 @@ This error section is stored in a separate file in <code>includes/_errors.md</co
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request -- Your request is invalid.</td>
+<td>Bad Request</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong.</td>
+<td>Unauthorized</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
+<td>Forbidden</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified kitten could not be found.</td>
+<td>Not Found</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers.</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&#39;m a teapot.</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+<td>Method Not Allowed</td>
 </tr>
 <tr>
 <td>500</td>
-<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+<td>Internal Server Error</td>
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+<td>Service Unavailable</td>
 </tr>
 </tbody></table>
 
