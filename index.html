@@ -295,36 +295,12 @@
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"43f8cdaf-3e43-429d-beb2-94e8220a8a06"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"lang"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"termsOfService"</span><span class="p">:</span><span class="w"> </span><span class="s2">"terms of service text"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"aboutText"</span><span class="p">:</span><span class="w"> </span><span class="s2">"information about survey instance text"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"contactEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"contact@email.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"maxDays"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown_prompt"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown prompt title"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"Choice 2"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox_prompt"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox prompt title"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"Choice 2"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-        </span><span class="p">],</span><span class="w">
-        </span><span class="s2">"maxPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"numPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"uuid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"43f8cdaf-3e43-429d-beb2-94e8220a8a06"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"avatar"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
     </span><span class="s2">"defaultAvatar"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/assets/static/defaultAvatar.png"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"surveyName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tester"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"surveyId"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
@@ -334,14 +310,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your primary occupation?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -349,15 +318,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"How do you typically commute to your work location?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">110</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"6"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"6"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -365,16 +326,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Do you use any alternative mode of travel to work?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"7"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w"> </span><span class="s2">"7"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -382,15 +334,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"How do you typically commute to your studies?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">108</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"6"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"6"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -398,16 +342,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Do you use any alternative mode of travel to your studies?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">109</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"7"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w"> </span><span class="s2">"7"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -415,11 +350,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your gender?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -427,14 +358,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"What is your age bracket?"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"5"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"5"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -442,10 +366,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown selection title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"Choice 2"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Choice 2"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -453,10 +374,7 @@
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox selection title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
             </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                    </span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"Choice 2"</span><span class="w">
-                </span><span class="p">]</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Choice 2"</span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
@@ -487,44 +405,52 @@
             </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_work"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your work location on the map"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">107</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address input title"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_study"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your study location on the map"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">106</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location_home"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Please enter your home location on the map"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">105</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-            </span><span class="p">}</span><span class="w">
+            </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="s2">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s2">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New user successfully registered."</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"avatar"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+    </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"maxDays"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"prompts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown_prompt"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dropdown prompt title"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Choice 2"</span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"colName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox_prompt"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"prompt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"checkbox prompt title"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"choices"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Choice 1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Choice 2"</span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"maxPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"numPrompts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New user successfully registered."</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>A new user is created within a survey by supplying a randomly generated UUID to identify the user. This needs to be cached within the app as it is required for future requests. The <code>survey_name</code> corresponds to the name used to signup the survey via the dashboard. The <code>avatar</code> path provides the URI to locate the survey&#39;s avatar icon when joined with the root URL. In the example above, the full path would then be: &quot;http://<api.root.url>/assets/static/avatars/93jf3.jpg&quot;.</p>
+<p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for future requests. Relying on the app to generate the UUID is a carry-over from a legacy version of the platform, and may be generated server-side in the future.</p>
+
+<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: &quot;http://<api.root.url>/assets/static/avatars/93jf3.jpg&quot;.</p>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/create</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
@@ -548,8 +474,8 @@
 Remember to cache the <code>uuid</code> within the client for future requests.
 </aside>
 <h2 id='parsing-the-survey'>Parsing the Survey</h2>
-<p>Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as <code>id</code> within the <em>create user</em> response. The IDs 1-10 correspond to generic input fields, 98-99 are specialty dialogs, and 100-103 are prompts that cannot be deleted on the frontend and will appear in every survey.</p>
-
+<p>Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as <code>id</code> within the <em>create user</em> response. </p>
+<h5 id='generic-fields'>Generic Fields</h5>
 <table><thead>
 <tr>
 <th>id</th>
@@ -583,6 +509,8 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <td>text box</td>
 </tr>
 </tbody></table>
+<h5 id='hardcoded-fields'>Hardcoded Fields</h5>
+<p>Fields with an <code>id</code> greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.</p>
 
 <table><thead>
 <tr>
@@ -732,65 +660,52 @@ Remember to cache the <code>uuid</code> within the client for future requests.
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"04399688-f7aa-4e7d-aeda-a54de210d843"</span><span class="p">,</span>
     <span class="s">"coordinates"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.9005850917305266</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.3757285807726195</span><span class="p">,</span>
             <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5069920593"</span><span class="p">,</span>
-            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:33-04:00"</span><span class="p">,</span>
-            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">48.07675588398361</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6316462699"</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6462882776492511</span>
+            <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">32.34234</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">48.07675588398361</span><span class="p">,</span>
+            <span class="s">"direction"</span><span class="p">:</span> <span class="mf">164.3948</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.3757285807726195</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.9005850917305266</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6462882776492511</span><span class="p">,</span>
+            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:33-04:00"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4709612219"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6011947415"</span><span class="p">,</span>
+            <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">31.82743</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">51.04449870001568</span><span class="p">,</span>
+            <span class="s">"direction"</span><span class="p">:</span> <span class="mf">162.83454384</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
             <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
             <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.7147102339936264</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
             <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.7981422356509369</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4709612219"</span><span class="p">,</span>
-            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:48-04:00"</span><span class="p">,</span>
-            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">51.04449870001568</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6011947415"</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.47743632708330497</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.6164638302522808</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.23135915741337032</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5026375686"</span><span class="p">,</span>
-            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:03-04:00"</span><span class="p">,</span>
-            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">53.47408048034383</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6364625799"</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.11871749871078396</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">44</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.7147102339936264</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.47743632708330497</span><span class="p">,</span>
             <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.8849309929557423</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">39</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.2051143438611197</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5138905076"</span><span class="p">,</span>
-            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:18-04:00"</span><span class="p">,</span>
-            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">33.00381524750525</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6326201573"</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6564783774960729</span>
+            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:48-04:00"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5026375686"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6364625799"</span><span class="p">,</span>
+            <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">33.11732</span><span class="p">,</span>
+            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">53.47408048034383</span><span class="p">,</span>
+            <span class="s">"direction"</span><span class="p">:</span> <span class="mf">163.28343</span><span class="p">,</span>
+            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.23135915741337032</span><span class="p">,</span>
+            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.6164638302522808</span><span class="p">,</span>
+            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.11871749871078396</span><span class="p">,</span>
             <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.8650806338748424</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.6513500120220839</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4641170882"</span><span class="p">,</span>
-            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:33-04:00"</span><span class="p">,</span>
-            <span class="s">"speed"</span><span class="p">:</span> <span class="mf">40.212286896732074</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6115764412"</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.5778861925789305</span>
-        <span class="p">}</span>
+            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:03-04:00"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
     <span class="p">]</span>
 <span class="p">}</span>
 
