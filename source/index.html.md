@@ -53,36 +53,12 @@ response = requests.post(url, data=parameters)
 
 ```json
 {
+    "uuid": "43f8cdaf-3e43-429d-beb2-94e8220a8a06",
     "lang": "en",
     "termsOfService": "terms of service text",
     "aboutText": "information about survey instance text",
     "contactEmail": "contact@email.com",
-    "prompt": {
-        "maxDays": 14,
-        "prompts": [
-            {
-                "colName": "dropdown_prompt",
-                "prompt": "dropdown prompt title",
-                "id": 1,
-                "choices": [
-                    "Choice 1",
-                    "Choice 2"
-                ]
-            },
-            {
-                "colName": "checkbox_prompt",
-                "prompt": "checkbox prompt title",
-                "id": 2,
-                "choices": [
-                    "Choice 1",
-                    "Choice 2"
-                ]
-            }
-        ],
-        "maxPrompts": 20,
-        "numPrompts": 0
-    },
-    "uuid": "43f8cdaf-3e43-429d-beb2-94e8220a8a06",
+    "avatar": null,
     "defaultAvatar": "/assets/static/defaultAvatar.png",
     "surveyName": "tester",
     "surveyId": 22,
@@ -92,14 +68,7 @@ response = requests.post(url, data=parameters)
             "prompt": "What is your primary occupation?",
             "id": 104,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5"]
             }
         },
         {
@@ -107,15 +76,7 @@ response = requests.post(url, data=parameters)
             "prompt": "How do you typically commute to your work location?",
             "id": 110,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5", "6"]
             }
         },
         {
@@ -123,16 +84,7 @@ response = requests.post(url, data=parameters)
             "prompt": "Do you use any alternative mode of travel to work?",
             "id": 111,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5", "6", "7"]
             }
         },
         {
@@ -140,15 +92,7 @@ response = requests.post(url, data=parameters)
             "prompt": "How do you typically commute to your studies?",
             "id": 108,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5", "6"]
             }
         },
         {
@@ -156,16 +100,7 @@ response = requests.post(url, data=parameters)
             "prompt": "Do you use any alternative mode of travel to your studies?",
             "id": 109,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5", "6", "7"]
             }
         },
         {
@@ -173,11 +108,7 @@ response = requests.post(url, data=parameters)
             "prompt": "What is your gender?",
             "id": 100,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2"
-                ]
+                "choices": ["0", "1", "2"]
             }
         },
         {
@@ -185,14 +116,7 @@ response = requests.post(url, data=parameters)
             "prompt": "What is your age bracket?",
             "id": 101,
             "fields": {
-                "choices": [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5"
-                ]
+                "choices": ["0", "1", "2", "3", "4", "5"]
             }
         },
         {
@@ -200,10 +124,7 @@ response = requests.post(url, data=parameters)
             "prompt": "dropdown selection title",
             "id": 1,
             "fields": {
-                "choices": [
-                    "Choice 1",
-                    "Choice 2"
-                ]
+                "choices": ["Choice 1", "Choice 2"]
             }
         },
         {
@@ -211,10 +132,7 @@ response = requests.post(url, data=parameters)
             "prompt": "checkbox selection title",
             "id": 2,
             "fields": {
-                "choices": [
-                    "Choice 1",
-                    "Choice 2"
-                ]
+                "choices": ["Choice 1", "Choice 2"]
             }
         },
         {
@@ -245,45 +163,53 @@ response = requests.post(url, data=parameters)
             "colName": "location_work",
             "prompt": "Please enter your work location on the map",
             "id": 107,
-            "fields": {
-                "latitude": null,
-                "longitude": null
-            }
+            "fields": {"latitude": null, "longitude": null}
         },
         {
             "colName": "address",
             "prompt": "address input title",
             "id": 4,
-            "fields": {
-                "latitude": null,
-                "longitude": null
-            }
+            "fields": {"latitude": null, "longitude": null}
         },
         {
             "colName": "location_study",
             "prompt": "Please enter your study location on the map",
             "id": 106,
-            "fields": {
-                "latitude": null,
-                "longitude": null
-            }
+            "fields": {"latitude": null, "longitude": null}
         },
         {
             "colName": "location_home",
             "prompt": "Please enter your home location on the map",
             "id": 105,
-            "fields": {
-                "latitude": null,
-                "longitude": null
-            }
+            "fields": {"latitude": null, "longitude": null}
         }
     ],
-    "user": "New user successfully registered.",
-    "avatar": null
+    "prompt": {
+        "maxDays": 14,
+        "prompts": [
+            {
+                "colName": "dropdown_prompt",
+                "prompt": "dropdown prompt title",
+                "id": 1,
+                "choices": ["Choice 1", "Choice 2"]
+            },
+            {
+                "colName": "checkbox_prompt",
+                "prompt": "checkbox prompt title",
+                "id": 2,
+                "choices": ["Choice 1", "Choice 2"]
+            }
+        ],
+        "maxPrompts": 20,
+        "numPrompts": 0
+    },
+    "user": "New user successfully registered."
 }
 ```
 
-A new user is created within a survey by supplying a randomly generated UUID to identify the user. This needs to be cached within the app as it is required for future requests. The `survey_name` corresponds to the name used to signup the survey via the dashboard. The `avatar` path provides the URI to locate the survey's avatar icon when joined with the root URL. In the example above, the full path would then be: "http://<api.root.url>/assets/static/avatars/93jf3.jpg".
+A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for future requests. Relying on the app to generate the UUID is a carry-over from a legacy version of the platform, and may be generated server-side in the future.
+
+The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: "http://<api.root.url>/assets/static/avatars/93jf3.jpg".
 
 ### HTTP Request
 
@@ -302,7 +228,9 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 
 ## Parsing the Survey
 
-Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as `id` within the _create user_ response. The IDs 1-10 correspond to generic input fields, 98-99 are specialty dialogs, and 100-103 are prompts that cannot be deleted on the frontend and will appear in every survey.
+Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as `id` within the _create user_ response. 
+
+##### Generic Fields
 
 | id   | field names         | description  |
 | ---- | ------------------- | ------------ |
@@ -311,6 +239,10 @@ Each prompt from the returned survey (above) is associated with a field type to 
 | 3    | number              | number input |
 | 4    | latitude, longitude | map/address  |
 | 5    | text                | text box     |
+
+##### Hardcoded Fields
+
+Fields with an `id` greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.
 
 | id   | __hardcoded fields__    | description                             |
 | ---- | ----------------------- | --------------------------------------- |
@@ -411,65 +343,52 @@ test_data = {
     "uuid": "04399688-f7aa-4e7d-aeda-a54de210d843",
     "coordinates": [
         {
-            "v_accuracy": 8,
-            "mode_detected": 1,
-            "acceleration_y": 0.9005850917305266,
-            "h_accuracy": 3,
-            "acceleration_x": 0.3757285807726195,
             "latitude": "45.5069920593",
-            "timestamp": "2016-10-29T09:25:33-04:00",
-            "speed": 48.07675588398361,
             "longitude": "-73.6316462699",
-            "acceleration_z": 0.6462882776492511
+            "altitude": 32.34234,
+            "speed": 48.07675588398361,
+            "direction": 164.3948,
+            "h_accuracy": 3,
+            "v_accuracy": 8,
+            "acceleration_x": 0.3757285807726195,
+            "acceleration_y": 0.9005850917305266,
+            "acceleration_z": 0.6462882776492511,
+            "mode_detected": 1,
+            "point_type": 3,
+            "timestamp": "2016-10-29T09:25:33-04:00",
         },
         {
+            "latitude": "45.4709612219",
+            "longitude": "-73.6011947415",
+            "altitude": 31.82743,
+            "speed": 51.04449870001568,
+            "direction": 162.83454384,
+			"h_accuracy": 14,
             "v_accuracy": 19,
             "mode_detected": 3,
-            "acceleration_y": 0.7147102339936264,
-            "h_accuracy": 14,
             "acceleration_x": 0.7981422356509369,
-            "latitude": "45.4709612219",
-            "timestamp": "2016-10-29T09:25:48-04:00",
-            "speed": 51.04449870001568,
-            "longitude": "-73.6011947415",
-            "acceleration_z": 0.47743632708330497
-        },
-        {
-            "v_accuracy": 21,
-            "mode_detected": 2,
-            "acceleration_y": 0.6164638302522808,
-            "h_accuracy": 1,
-            "acceleration_x": 0.23135915741337032,
-            "latitude": "45.5026375686",
-            "timestamp": "2016-10-29T09:26:03-04:00",
-            "speed": 53.47408048034383,
-            "longitude": "-73.6364625799",
-            "acceleration_z": 0.11871749871078396
-        },
-        {
-            "v_accuracy": 44,
+            "acceleration_y": 0.7147102339936264,
+            "acceleration_z": 0.47743632708330497,
             "mode_detected": 1,
-            "acceleration_y": 0.8849309929557423,
-            "h_accuracy": 39,
-            "acceleration_x": 0.2051143438611197,
-            "latitude": "45.5138905076",
-            "timestamp": "2016-10-29T09:26:18-04:00",
-            "speed": 33.00381524750525,
-            "longitude": "-73.6326201573",
-            "acceleration_z": 0.6564783774960729
+            "point_type": 1,
+            "timestamp": "2016-10-29T09:25:48-04:00",
         },
         {
-            "v_accuracy": 0,
+            "latitude": "45.5026375686",
+            "longitude": "-73.6364625799",
+            "altitude": 33.11732,
+            "speed": 53.47408048034383,
+            "direction": 163.28343,
+            "h_accuracy": 1,
+            "v_accuracy": 21,
+            "acceleration_x": 0.23135915741337032,
+            "acceleration_y": 0.6164638302522808,
+            "acceleration_z": 0.11871749871078396,
             "mode_detected": 2,
-            "acceleration_y": 0.8650806338748424,
-            "h_accuracy": 25,
-            "acceleration_x": 0.6513500120220839,
-            "latitude": "45.4641170882",
-            "timestamp": "2016-10-29T09:26:33-04:00",
-            "speed": 40.212286896732074,
-            "longitude": "-73.6115764412",
-            "acceleration_z": 0.5778861925789305
-        }
+            "point_type": 5,
+            "timestamp": "2016-10-29T09:26:03-04:00",
+        },
+        ...
     ]
 }
 
