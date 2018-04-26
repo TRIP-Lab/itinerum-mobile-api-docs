@@ -18,11 +18,10 @@ search: true
 __Welcome to the Itinerum API!__ This documentation describes getting started with the mobile API endpoints for authentication, retrieving survey questions, mode prompts, and uploading user data.
 
 There are 3 types of requests an application will make:
+
 1. Initial request where user account is created and survey schema is sent to device
 2. Second POST to server where demographic survey responses are submitted
 3. All subsequent server calls to add new GPS points, prompt responses and cancelled prompts
-
-Python code examples are located in the dark area to the right.
 
 
 # Create a New User
@@ -35,11 +34,11 @@ url = API_URL + '/create'
 
 test_data = {
     "lang": "en",
-    "survey_name": "test",
+    "surveyName": "test",
     "user": {
-        "itinerum_version": "12c",
+        "itinerumVersion": "12c",
         "uuid": "7077a34e-afe5-4c22-bd96-119256b7dc51",
-        "os_version": "80.23",
+        "osVersion": "80.23",
         "model": "iPhone 4s",
         "os": "ios"
     }
@@ -207,9 +206,12 @@ response = requests.post(url, data=parameters)
 }
 ```
 
-A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for future requests. Relying on the app to generate the UUID is a carry-over from a legacy version of the platform, and may be generated server-side in the future.
+A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. *Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.*
 
-The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: "http://<api.root.url>/assets/static/avatars/93jf3.jpg".
+The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: `http://<api.root.url>/assets/static/avatars/93jf3.jpg`.
+
+<aside class="notice">
+The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
 
 ### HTTP Request
 
@@ -217,20 +219,16 @@ The `avatar` path provides the relative URI of the survey's branding avatar. If 
 
 ### Query Parameters
 
-| Parameter   | Description                              |
-| ----------- | ---------------------------------------- |
-| user        | Dictionary containing `uuid`, `model`, `itinerum_version`, `os`, `os_version` |
-| survey_name | Name of survey to associate the user     |
-
-<aside class="notice">
-Remember to cache the <code>uuid</code> within the client for future requests.
-</aside>
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| user       | Dictionary containing `uuid`, `model`, `itinerumVersion`, `os`, `osVersion` |
+| surveyName | Name of survey to associate the user                         |
 
 ## Parsing the Survey
 
-Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as `id` within the _create user_ response. 
+Each prompt from the survey is associated with a field type to map to the response input box. This is returned as `id` within each item in the **[create a new user](#create-a-new-user)** response's `survey` attribute. 
 
-##### Generic Fields
+### Generic Fields
 
 | id   | field names         | description  |
 | ---- | ------------------- | ------------ |
@@ -240,24 +238,24 @@ Each prompt from the returned survey (above) is associated with a field type to 
 | 4    | latitude, longitude | map/address  |
 | 5    | text                | text box     |
 
-##### Hardcoded Fields
+### Hardcoded Fields
 
 Fields with an `id` greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.
 
-| id   | __hardcoded fields__    | description                             |
-| ---- | ----------------------- | --------------------------------------- |
-| 100  | Gender                  | gender                                  |
-| 101  | Age                     | age                                     |
-| 102  | mode                    | primary mode (unuse  d)                 |
-| 103  | Email                   | email                                   |
-| 104  | member_type             | primary occupartion                     |
-| 105  | location_home           | mark user's home location on map        |
-| 106  | location_study          | mark user's study location on map       |
-| 107  | location_work           | mark user's work location on map        |
-| 108  | travel\_mode_study      | primary travel mode to study location   |
-| 109  | travel\_mode\_alt_study | secondary travel mode to study location |
-| 110  | travel\_mode_work       | primary travel mode to work location    |
-| 111  | travel\_mode\_alt_work  | secondary travel mode to work location  |
+| id   | __hardcoded fields__     | description                             |
+| ---- | ------------------------ | --------------------------------------- |
+| 100  | Gender                   | gender                                  |
+| 101  | Age                      | age                                     |
+| 102  | mode                     | primary mode (unused)                   |
+| 103  | Email                    | email                                   |
+| 104  | member_type              | primary occupartion                     |
+| 105  | location_home            | mark user's home location on map        |
+| 106  | location_study           | mark user's study location on map       |
+| 107  | location_work            | mark user's work location on map        |
+| 108  | travel\_mode\_study      | primary travel mode to study location   |
+| 109  | travel\_mode\_alt\_study | secondary travel mode to study location |
+| 110  | travel\_mode\_work       | primary travel mode to work location    |
+| 111  | travel\_mode\_alt\_work  | secondary travel mode to work location  |
 
 
 # Updating the Database
@@ -273,32 +271,32 @@ test_data = {
             "Choice 1"
         ],
         "dropdown": "Choice 2",
-        "Gender": "1",
-        "travel_mode_work": "5",
+        "Gender": 1,
+        "travel_mode_work": 5,
         "address": {
-            "latitude": "-12.5665545",
-            "longitude": "-41.789760"
+            "latitude": -12.5665545,
+            "longitude": -41.789760
         },
         "number": 5789,
-        "travel_mode_alt_work": "7",
+        "travel_mode_alt_work": 7,
         "Email": "vpollich@tillman-heathcote.com",
-        "travel_mode_alt_study": "0",
-        "member_type": "0",
+        "travel_mode_alt_study": 0,
+        "member_type": 0,
         "text": "Cumque nemo occaecati aliquid nam iusto rem itaque. Aperiam saepe itaque quas odit accusantium. Recusandae maiores consequatur esse veniam sequi odit.",
         "location_home": {
-            "latitude": "-14.643098",
-            "longitude": "-80.968816"
+            "latitude": -14.643098,
+            "longitude": -80.968816
         },
         "location_study": {
-            "latitude": "-84.0534215",
-            "longitude": "144.383503"
+            "latitude": -84.0534215,
+            "longitude": 144.383503
         },
         "location_work": {
-            "latitude": "-13.8300325",
-            "longitude": "101.956003"
+            "latitude": -13.8300325,
+            "longitude": 101.956003
         },
-        "Age": "1",
-        "travel_mode_study": "4"
+        "Age": 1,
+        "travel_mode_study": 4
     },
     "uuid": "d5f7eb50-6dec-48d1-86ff-ee4b96b583f7"
 }
@@ -320,7 +318,13 @@ response = requests.post(url, data=parameters)
 }
 ```
 
-This endpoint is shared with updates for coordinates and modeprompts. This follows the design of the original API, however, it now requires only the necessary data to be submitted (i.e., the survey answers do not need to be sent in each request).
+<aside class="notice">Keys within <code>survey</code> attribute do not adhere to the camelCase requirements since these keys will be determined by the user via the dashboard's survey builder. The original hardcoded questions also retain underscores to introduce less breaking changes and eventually these will be deprecated in favor of new <b><a href="#parsing-the-survey">generic fields</a></b> with the same purpose.
+
+<br></br>
+
+<i>This seemed an acceptable trade-off since they are dynamic fields and will not be relied on by the app except in special hardcoded circumstances for existing tailored mobile apps.</i></aside>
+
+This endpoint is shared with updates for coordinates, prompts, and cancelled prompts. This follows the design of the original API, however, it now requires only the necessary data to be submitted (i.e., the survey answers do not need to be sent in each request).
 
 ### HTTP Request
 
@@ -333,7 +337,7 @@ This endpoint is shared with updates for coordinates and modeprompts. This follo
 | survey    | Dictionary containing the column names from the supplied schema and the user input values |
 | uuid      | The user's cached installation uuid      |
 
-## Updating Coordinates
+## Adding Coordinates
 
 ```python
 import requests
@@ -343,49 +347,49 @@ test_data = {
     "uuid": "04399688-f7aa-4e7d-aeda-a54de210d843",
     "coordinates": [
         {
-            "latitude": "45.5069920593",
-            "longitude": "-73.6316462699",
+            "latitude": 45.5069920593,
+            "longitude": -73.6316462699,
             "altitude": 32.34234,
             "speed": 48.07675588398361,
             "direction": 164.3948,
-            "h_accuracy": 3,
-            "v_accuracy": 8,
-            "acceleration_x": 0.3757285807726195,
-            "acceleration_y": 0.9005850917305266,
-            "acceleration_z": 0.6462882776492511,
-            "mode_detected": 1,
-            "point_type": 3,
+            "hAccuracy": 3,
+            "vAccuracy": 8,
+            "accelerationX": 0.3757285807726195,
+            "accelerationY": 0.9005850917305266,
+            "accelerationZ": 0.6462882776492511,
+            "modeDetected": 1,
+            "pointType": 3,
             "timestamp": "2016-10-29T09:25:33-04:00",
         },
         {
-            "latitude": "45.4709612219",
-            "longitude": "-73.6011947415",
+            "latitude": 45.4709612219,
+            "longitude": -73.6011947415,
             "altitude": 31.82743,
             "speed": 51.04449870001568,
             "direction": 162.83454384,
-			"h_accuracy": 14,
-            "v_accuracy": 19,
-            "mode_detected": 3,
-            "acceleration_x": 0.7981422356509369,
-            "acceleration_y": 0.7147102339936264,
-            "acceleration_z": 0.47743632708330497,
-            "mode_detected": 1,
-            "point_type": 1,
+			"hAccuracy": 14,
+            "vAccuracy": 19,
+            "modeDetected": 3,
+            "accelerationX": 0.7981422356509369,
+            "accelerationY": 0.7147102339936264,
+            "accelerationZ": 0.47743632708330497,
+            "modeDetected": 1,
+            "pointType": 1,
             "timestamp": "2016-10-29T09:25:48-04:00",
         },
         {
-            "latitude": "45.5026375686",
-            "longitude": "-73.6364625799",
+            "latitude": 45.5026375686,
+            "longitude": -73.6364625799,
             "altitude": 33.11732,
             "speed": 53.47408048034383,
             "direction": 163.28343,
-            "h_accuracy": 1,
-            "v_accuracy": 21,
-            "acceleration_x": 0.23135915741337032,
-            "acceleration_y": 0.6164638302522808,
-            "acceleration_z": 0.11871749871078396,
-            "mode_detected": 2,
-            "point_type": 5,
+            "hAccuracy": 1,
+            "vAccuracy": 21,
+            "accelerationX": 0.23135915741337032,
+            "accelerationY": 0.6164638302522808,
+            "accelerationZ": 0.11871749871078396,
+            "modeDetected": 2,
+            "pointType": 5,
             "timestamp": "2016-10-29T09:26:03-04:00",
         },
         ...
@@ -412,7 +416,7 @@ response = requests.post(update_url, data=parameters)
 
 ```
 
-Allows application to record collected GPS points to server. This endpoint is shared with updates for survey responses and may be combined to a single request.
+Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined to a single request.
 
 ### HTTP Request
 
@@ -426,7 +430,7 @@ Allows application to record collected GPS points to server. This endpoint is sh
 | user        | Dictionary containing `uuid` key and value (TODO: change this) |
 
 
-## Updating Prompts
+## Upserting Prompts
 
 ```python
 import requests
@@ -437,8 +441,8 @@ test_data = {
             "uuid": "0dd86866-9e00-474f-a24b-103431254726",
             "displayed_at": "2017-04-27T08:37:03-04:00",
             "recorded_at": "2017-04-27T08:37:03-04:00",
-            "longitude": "-73.5769640073",
-            "latitude": "45.4868670481",
+            "longitude": -73.5769640073,
+            "latitude": 45.4868670481,
             "answer": "Choice 1",
             "prompt_num": 0
         },
@@ -446,8 +450,8 @@ test_data = {
             "uuid": "0dd86866-9e00-474f-a24b-103431254726",
             "displayed_at": "2017-04-28T07:24:25-04:00",
             "recorded_at": "2017-04-28T07:24:25-04:00",
-            "longitude": "-73.6179342516",
-            "latitude": "45.5205378578",
+            "longitude": -73.6179342516,
+            "latitude": 45.5205378578,
             "answer": ["Choice A", "Choice C"],
             "prompt_num": 1
         }
@@ -498,7 +502,7 @@ Updated prompts may be resubmitted with the same format as long as the UUID rema
 | prompts     | Array of mode prompt responses to record |
 | uuid        | `uuid` for mobile user                   |
 
-## Updating Cancelled Prompts
+## Adding Cancelled Prompts
 
 ```python
 import requests
@@ -509,15 +513,15 @@ test_data = {
             "uuid": "c1d15413-b33d-4aaa-bf84-762517a3284b",
             "displayed_at": "2017-04-27T08:37:03-04:00",
             "cancelled_at": "2017-04-27T08:37:03-04:00",
-            "longitude": "-73.5769640073",
-            "latitude": "45.4868670481",
+            "longitude": -73.5769640073,
+            "latitude": 45.4868670481,
         },
         {
             "uuid": "e2dd9ab2-f859-4d44-b569-6791a4a2ed7b",
             "displayed_at": "2017-04-28T07:24:25-04:00",
             "cancelled_at": "2017-04-28T07:24:25-04:00",
-            "longitude": "-73.6179342516",
-            "latitude": "45.5205378578",
+            "longitude": -73.6179342516,
+            "latitude": 45.5205378578,
         }
     ],
     "uuid": "bb9212b8-a608-48a2-962e-3ecb9632a12b",
