@@ -292,6 +292,31 @@
 <span class="n">parameters</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
 </code></pre>
+<p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. <em>Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.</em></p>
+
+<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: <code>http://&lt;api.root.url&gt;/assets/static/avatars/93jf3.jpg</code>.</p>
+
+<aside class="notice">
+The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/create</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>Dictionary containing <code>uuid</code>, <code>model</code>, <code>itinerumVersion</code>, <code>os</code>, <code>osVersion</code></td>
+</tr>
+<tr>
+<td>surveyName</td>
+<td>Name of survey to associate the user</td>
+</tr>
+</tbody></table>
+<h2 id='parsing-the-survey'>Parsing the Survey</h2>
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
@@ -448,33 +473,37 @@
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New user successfully registered."</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. <em>Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.</em></p>
+</span></code></pre><h6 id='survey-questions'>Survey Questions</h6>
+<p>The <code>survey</code> values provides the ordered list of survey questions created using the dashboard&#39;s survey builder. The attributes for each survey question are detailed below.</p>
 
-<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: <code>http://&lt;api.root.url&gt;/assets/static/avatars/93jf3.jpg</code>.</p>
-
-<aside class="notice">
-The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>POST http://&lt;api.root.url&gt;/mobile/v1/create</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Key</th>
+<th>Value Types</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>user</td>
-<td>Dictionary containing <code>uuid</code>, <code>model</code>, <code>itinerumVersion</code>, <code>os</code>, <code>osVersion</code></td>
+<td><code>colName</code></td>
+<td><em>string</em></td>
+<td>The column label provided by admin users in the survey builder for output .csv files; currently also used by mobile apps as the question title -- this should like be reconsidered since formatting can be inconsistent</td>
 </tr>
 <tr>
-<td>surveyName</td>
-<td>Name of survey to associate the user</td>
+<td><code>prompt</code></td>
+<td><em>string</em></td>
+<td>The question string for each survey question</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><em>integer</em></td>
+<td>The generic field type ID as described in the generic or hardcoded fields tables</td>
+</tr>
+<tr>
+<td><code>fields</code></td>
+<td><em>dictionary</em></td>
+<td>A dictionary object containing the <code>field names</code> as keys from the generic  or hardcoded fields tables</td>
 </tr>
 </tbody></table>
-<h2 id='parsing-the-survey'>Parsing the Survey</h2>
-<p>Each prompt from the survey is associated with a field type to map to the response input box. This is returned as <code>id</code> within each item in the <strong><a href="#create-a-new-user">create a new user</a></strong> response&#39;s <code>survey</code> attribute. </p>
 <h3 id='generic-fields'>Generic Fields</h3>
 <table><thead>
 <tr>
@@ -515,69 +544,82 @@ The original implementation of the API implemented and documented key names inco
 <table><thead>
 <tr>
 <th>id</th>
-<th><strong>hardcoded fields</strong></th>
+<th><strong>hardcoded colName</strong></th>
+<th><strong>field names (placeholder)</strong></th>
 <th>description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>100</td>
 <td>Gender</td>
+<td>choices</td>
 <td>gender</td>
 </tr>
 <tr>
 <td>101</td>
 <td>Age</td>
+<td>choices</td>
 <td>age</td>
 </tr>
 <tr>
 <td>102</td>
 <td>mode</td>
+<td>choices</td>
 <td>primary mode (unused)</td>
 </tr>
 <tr>
 <td>103</td>
 <td>Email</td>
+<td>choices</td>
 <td>email</td>
 </tr>
 <tr>
 <td>104</td>
 <td>member_type</td>
-<td>primary occupartion</td>
+<td>choices</td>
+<td>primary occupation</td>
 </tr>
 <tr>
 <td>105</td>
 <td>location_home</td>
+<td>latitude, longitude</td>
 <td>mark user&#39;s home location on map</td>
 </tr>
 <tr>
 <td>106</td>
 <td>location_study</td>
+<td>latitude, longitude</td>
 <td>mark user&#39;s study location on map</td>
 </tr>
 <tr>
 <td>107</td>
 <td>location_work</td>
+<td>latitude, longitude</td>
 <td>mark user&#39;s work location on map</td>
 </tr>
 <tr>
 <td>108</td>
 <td>travel_mode_study</td>
+<td>choices</td>
 <td>primary travel mode to study location</td>
 </tr>
 <tr>
 <td>109</td>
 <td>travel_mode_alt_study</td>
-<td>secondary travel mode to study location</td>
+<td>choices</td>
+<td>alternate travel mode to study location</td>
 </tr>
 <tr>
 <td>110</td>
 <td>travel_mode_work</td>
-<td>primary travel mode to work location</td>
+<td>choices</td>
+<td>primary travel mode work location</td>
 </tr>
 <tr>
 <td>111</td>
 <td>travel_mode_alt_work</td>
-<td>secondary travel mode to work location</td>
+<td>choices</td>
+<td>alternate travel mode to work location</td>
 </tr>
 </tbody></table>
 <h1 id='updating-the-database'>Updating the Database</h1><h2 id='answering-the-survey'>Answering the Survey</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
@@ -585,9 +627,7 @@ The original implementation of the API implemented and documented key names inco
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"survey"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"checkbox"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s">"Choice 1"</span>
-        <span class="p">],</span>
+        <span class="s">"checkbox"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Choice 1"</span><span class="p">],</span>
         <span class="s">"dropdown"</span><span class="p">:</span> <span class="s">"Choice 2"</span><span class="p">,</span>
         <span class="s">"Gender"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="s">"travel_mode_work"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
