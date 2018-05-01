@@ -238,32 +238,32 @@ The `survey` values provides the ordered list of survey questions created using 
 
 #### Generic Fields
 
-| id   | field names         | description  |
-| ---- | ------------------- | ------------ |
-| 1    | choices             | select one   |
-| 2    | choices             | select many  |
-| 3    | number              | number input |
-| 4    | latitude, longitude | map/address  |
-| 5    | text                | text box     |
+| id   | Field Names             | Description  |
+| ---- | ----------------------- | ------------ |
+| 1    | *choices*               | select one   |
+| 2    | *choices*               | select many  |
+| 3    | *number*                | number input |
+| 4    | *latitude*, *longitude* | map/address  |
+| 5    | *text*                  | text box     |
 
 #### Hardcoded Fields
 
 Fields with an `id` greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.
 
-| id   | __hardcoded colName__ | **field names (placeholder)** | description                             |
-| ---- | --------------------- | ----------------------------- | --------------------------------------- |
-| 100  | Gender                | choices                       | gender                                  |
-| 101  | Age                   | choices                       | age                                     |
-| 102  | mode                  | choices                       | primary mode (unused)                   |
-| 103  | Email                 | choices                       | email                                   |
-| 104  | member_type           | choices                       | primary occupation                      |
-| 105  | location_home         | latitude, longitude           | mark user's home location on map        |
-| 106  | location_study        | latitude, longitude           | mark user's study location on map       |
-| 107  | location_work         | latitude, longitude           | mark user's work location on map        |
-| 108  | travel\_mode\_study   | choices                       | primary travel mode to study location   |
-| 109  | travel_mode_alt_study | choices                       | alternate travel mode to study location |
-| 110  | travel_mode_work      | choices                       | primary travel mode work location       |
-| 111  | travel_mode_alt_work  | choices                       | alternate travel mode to work location  |
+| id   | Hardcoded colName__     | **Field Names (placeholder)** | Description                             |
+| ---- | ----------------------- | ----------------------------- | --------------------------------------- |
+| 100  | `Gender`                | *choices*                     | gender                                  |
+| 101  | `Age`                   | *choices*                     | age                                     |
+| 102  | `mode`                  | *choices*                     | primary mode (unused)                   |
+| 103  | `Email`                 | *choices*                     | email                                   |
+| 104  | `member_type`           | *choices*                     | primary occupation                      |
+| 105  | `location_home`         | *latitude*, *longitude*       | mark user's home location on map        |
+| 106  | `location_study`        | *latitude*, *longitude*       | mark user's study location on map       |
+| 107  | `location_work`         | *latitude*, *longitude*       | mark user's work location on map        |
+| 108  | `travel_mode_study`     | *choices*                     | primary travel mode to study location   |
+| 109  | `travel_mode_alt_study` | *choices*                     | alternate travel mode to study location |
+| 110  | `travel_mode_work`      | *choices*                     | primary travel mode work location       |
+| 111  | `travel_mode_alt_work`  | *choices*                     | alternate travel mode to work location  |
 
 
 # Updating the Database
