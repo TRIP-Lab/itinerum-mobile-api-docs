@@ -225,7 +225,7 @@ The original implementation of the API implemented and documented key names inco
 }
 ```
 
-#### Survey Questions
+### Survey Questions
 
 The `survey` values provides the ordered list of survey questions created using the dashboard's survey builder. The attributes for each survey question are detailed below.
 
@@ -236,7 +236,7 @@ The `survey` values provides the ordered list of survey questions created using 
 | `id`      | *integer*    | The generic field type ID as described in the generic or hardcoded fields tables |
 | `fields`  | *dictionary* | A dictionary object containing the `field names` as keys from the generic  or hardcoded fields tables |
 
-##### Generic Fields
+#### Generic Fields
 
 | id   | field names         | description  |
 | ---- | ------------------- | ------------ |
@@ -246,7 +246,7 @@ The `survey` values provides the ordered list of survey questions created using 
 | 4    | latitude, longitude | map/address  |
 | 5    | text                | text box     |
 
-##### Hardcoded Fields
+#### Hardcoded Fields
 
 Fields with an `id` greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.
 
