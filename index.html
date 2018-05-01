@@ -242,13 +242,13 @@
                     <a href="#answering-the-survey" class="toc-h2 toc-link" data-title="answering-the-survey">Answering the Survey</a>
                   </li>
                   <li>
-                    <a href="#updating-coordinates" class="toc-h2 toc-link" data-title="updating-coordinates">Updating Coordinates</a>
+                    <a href="#adding-coordinates" class="toc-h2 toc-link" data-title="adding-coordinates">Adding Coordinates</a>
                   </li>
                   <li>
-                    <a href="#updating-prompts" class="toc-h2 toc-link" data-title="updating-prompts">Updating Prompts</a>
+                    <a href="#upserting-prompts" class="toc-h2 toc-link" data-title="upserting-prompts">Upserting Prompts</a>
                   </li>
                   <li>
-                    <a href="#updating-cancelled-prompts" class="toc-h2 toc-link" data-title="updating-cancelled-prompts">Updating Cancelled Prompts</a>
+                    <a href="#adding-cancelled-prompts" class="toc-h2 toc-link" data-title="adding-cancelled-prompts">Adding Cancelled Prompts</a>
                   </li>
               </ul>
           </li>
@@ -266,12 +266,13 @@
         <h1 id='introduction'>Introduction</h1>
 <p><strong>Welcome to the Itinerum API!</strong> This documentation describes getting started with the mobile API endpoints for authentication, retrieving survey questions, mode prompts, and uploading user data.</p>
 
-<p>There are 3 types of requests an application will make:
-1. Initial request where user account is created and survey schema is sent to device
-2. Second POST to server where demographic survey responses are submitted
-3. All subsequent server calls to add new GPS points, prompt responses and cancelled prompts</p>
+<p>There are 3 types of requests an application will make:</p>
 
-<p>Python code examples are located in the dark area to the right.</p>
+<ol>
+<li>Initial request where user account is created and survey schema is sent to device</li>
+<li>Second POST to server where demographic survey responses are submitted</li>
+<li>All subsequent server calls to add new GPS points, prompt responses and cancelled prompts</li>
+</ol>
 <h1 id='create-a-new-user'>Create a New User</h1><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -279,11 +280,11 @@
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"lang"</span><span class="p">:</span> <span class="s">"en"</span><span class="p">,</span>
-    <span class="s">"survey_name"</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
+    <span class="s">"surveyName"</span><span class="p">:</span> <span class="s">"test"</span><span class="p">,</span>
     <span class="s">"user"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">"itinerum_version"</span><span class="p">:</span> <span class="s">"12c"</span><span class="p">,</span>
+        <span class="s">"itinerumVersion"</span><span class="p">:</span> <span class="s">"12c"</span><span class="p">,</span>
         <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"7077a34e-afe5-4c22-bd96-119256b7dc51"</span><span class="p">,</span>
-        <span class="s">"os_version"</span><span class="p">:</span> <span class="s">"80.23"</span><span class="p">,</span>
+        <span class="s">"osVersion"</span><span class="p">:</span> <span class="s">"80.23"</span><span class="p">,</span>
         <span class="s">"model"</span><span class="p">:</span> <span class="s">"iPhone 4s"</span><span class="p">,</span>
         <span class="s">"os"</span><span class="p">:</span> <span class="s">"ios"</span>
     <span class="p">}</span>
@@ -448,9 +449,12 @@
     </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New user successfully registered."</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for future requests. Relying on the app to generate the UUID is a carry-over from a legacy version of the platform, and may be generated server-side in the future.</p>
+<p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. <em>Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.</em></p>
 
-<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: &quot;http://<api.root.url>/assets/static/avatars/93jf3.jpg&quot;.</p>
+<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: <code>http://&lt;api.root.url&gt;/assets/static/avatars/93jf3.jpg</code>.</p>
+
+<aside class="notice">
+The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/create</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
@@ -462,20 +466,16 @@
 </thead><tbody>
 <tr>
 <td>user</td>
-<td>Dictionary containing <code>uuid</code>, <code>model</code>, <code>itinerum_version</code>, <code>os</code>, <code>os_version</code></td>
+<td>Dictionary containing <code>uuid</code>, <code>model</code>, <code>itinerumVersion</code>, <code>os</code>, <code>osVersion</code></td>
 </tr>
 <tr>
-<td>survey_name</td>
+<td>surveyName</td>
 <td>Name of survey to associate the user</td>
 </tr>
 </tbody></table>
-
-<aside class="notice">
-Remember to cache the <code>uuid</code> within the client for future requests.
-</aside>
 <h2 id='parsing-the-survey'>Parsing the Survey</h2>
-<p>Each prompt from the returned survey (above) is associated with a field type to map to the response input box. This is returned as <code>id</code> within the <em>create user</em> response. </p>
-<h5 id='generic-fields'>Generic Fields</h5>
+<p>Each prompt from the survey is associated with a field type to map to the response input box. This is returned as <code>id</code> within each item in the <strong><a href="#create-a-new-user">create a new user</a></strong> response&#39;s <code>survey</code> attribute. </p>
+<h3 id='generic-fields'>Generic Fields</h3>
 <table><thead>
 <tr>
 <th>id</th>
@@ -509,7 +509,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <td>text box</td>
 </tr>
 </tbody></table>
-<h5 id='hardcoded-fields'>Hardcoded Fields</h5>
+<h3 id='hardcoded-fields'>Hardcoded Fields</h3>
 <p>Fields with an <code>id</code> greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.</p>
 
 <table><thead>
@@ -532,7 +532,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <tr>
 <td>102</td>
 <td>mode</td>
-<td>primary mode (unuse  d)</td>
+<td>primary mode (unused)</td>
 </tr>
 <tr>
 <td>103</td>
@@ -589,32 +589,32 @@ Remember to cache the <code>uuid</code> within the client for future requests.
             <span class="s">"Choice 1"</span>
         <span class="p">],</span>
         <span class="s">"dropdown"</span><span class="p">:</span> <span class="s">"Choice 2"</span><span class="p">,</span>
-        <span class="s">"Gender"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
-        <span class="s">"travel_mode_work"</span><span class="p">:</span> <span class="s">"5"</span><span class="p">,</span>
+        <span class="s">"Gender"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"travel_mode_work"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
         <span class="s">"address"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-12.5665545"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-41.789760"</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">12.5665545</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">41.789760</span>
         <span class="p">},</span>
         <span class="s">"number"</span><span class="p">:</span> <span class="mi">5789</span><span class="p">,</span>
-        <span class="s">"travel_mode_alt_work"</span><span class="p">:</span> <span class="s">"7"</span><span class="p">,</span>
+        <span class="s">"travel_mode_alt_work"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
         <span class="s">"Email"</span><span class="p">:</span> <span class="s">"vpollich@tillman-heathcote.com"</span><span class="p">,</span>
-        <span class="s">"travel_mode_alt_study"</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
-        <span class="s">"member_type"</span><span class="p">:</span> <span class="s">"0"</span><span class="p">,</span>
+        <span class="s">"travel_mode_alt_study"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">"member_type"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
         <span class="s">"text"</span><span class="p">:</span> <span class="s">"Cumque nemo occaecati aliquid nam iusto rem itaque. Aperiam saepe itaque quas odit accusantium. Recusandae maiores consequatur esse veniam sequi odit."</span><span class="p">,</span>
         <span class="s">"location_home"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-14.643098"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-80.968816"</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">14.643098</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">80.968816</span>
         <span class="p">},</span>
         <span class="s">"location_study"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-84.0534215"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"144.383503"</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">84.0534215</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="mf">144.383503</span>
         <span class="p">},</span>
         <span class="s">"location_work"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"-13.8300325"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"101.956003"</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">13.8300325</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="mf">101.956003</span>
         <span class="p">},</span>
-        <span class="s">"Age"</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
-        <span class="s">"travel_mode_study"</span><span class="p">:</span> <span class="s">"4"</span>
+        <span class="s">"Age"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s">"travel_mode_study"</span><span class="p">:</span> <span class="mi">4</span>
     <span class="p">},</span>
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"d5f7eb50-6dec-48d1-86ff-ee4b96b583f7"</span>
 <span class="p">}</span>
@@ -634,7 +634,13 @@ Remember to cache the <code>uuid</code> within the client for future requests.
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint is shared with updates for coordinates and modeprompts. This follows the design of the original API, however, it now requires only the necessary data to be submitted (i.e., the survey answers do not need to be sent in each request).</p>
+<aside class="notice">Keys within <code>survey</code> attribute do not adhere to the camelCase requirements since these keys will be determined by the user via the dashboard's survey builder. The original hardcoded questions also retain underscores to introduce less breaking changes and eventually these will be deprecated in favor of new <b><a href="#parsing-the-survey">generic fields</a></b> with the same purpose.
+
+<br></br>
+
+<i>This seemed an acceptable trade-off since they are dynamic fields and will not be relied on by the app except in special hardcoded circumstances for existing tailored mobile apps.</i></aside>
+
+<p>This endpoint is shared with updates for coordinates, prompts, and cancelled prompts. This follows the design of the original API, however, it now requires only the necessary data to be submitted (i.e., the survey answers do not need to be sent in each request).</p>
 <h3 id='http-request-2'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
 <h3 id='query-parameters-2'>Query Parameters</h3>
@@ -653,56 +659,56 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <td>The user&#39;s cached installation uuid</td>
 </tr>
 </tbody></table>
-<h2 id='updating-coordinates'>Updating Coordinates</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<h2 id='adding-coordinates'>Adding Coordinates</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[],</span>
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"04399688-f7aa-4e7d-aeda-a54de210d843"</span><span class="p">,</span>
     <span class="s">"coordinates"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5069920593"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6316462699"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5069920593</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6316462699</span><span class="p">,</span>
             <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">32.34234</span><span class="p">,</span>
             <span class="s">"speed"</span><span class="p">:</span> <span class="mf">48.07675588398361</span><span class="p">,</span>
             <span class="s">"direction"</span><span class="p">:</span> <span class="mf">164.3948</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.3757285807726195</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.9005850917305266</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.6462882776492511</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"hAccuracy"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"vAccuracy"</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s">"accelerationX"</span><span class="p">:</span> <span class="mf">0.3757285807726195</span><span class="p">,</span>
+            <span class="s">"accelerationY"</span><span class="p">:</span> <span class="mf">0.9005850917305266</span><span class="p">,</span>
+            <span class="s">"accelerationZ"</span><span class="p">:</span> <span class="mf">0.6462882776492511</span><span class="p">,</span>
+            <span class="s">"modeDetected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"pointType"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
             <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:33-04:00"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4709612219"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6011947415"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.4709612219</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6011947415</span><span class="p">,</span>
             <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">31.82743</span><span class="p">,</span>
             <span class="s">"speed"</span><span class="p">:</span> <span class="mf">51.04449870001568</span><span class="p">,</span>
             <span class="s">"direction"</span><span class="p">:</span> <span class="mf">162.83454384</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.7981422356509369</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.7147102339936264</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.47743632708330497</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"hAccuracy"</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+            <span class="s">"vAccuracy"</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+            <span class="s">"modeDetected"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s">"accelerationX"</span><span class="p">:</span> <span class="mf">0.7981422356509369</span><span class="p">,</span>
+            <span class="s">"accelerationY"</span><span class="p">:</span> <span class="mf">0.7147102339936264</span><span class="p">,</span>
+            <span class="s">"accelerationZ"</span><span class="p">:</span> <span class="mf">0.47743632708330497</span><span class="p">,</span>
+            <span class="s">"modeDetected"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"pointType"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
             <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:25:48-04:00"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5026375686"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6364625799"</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5026375686</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6364625799</span><span class="p">,</span>
             <span class="s">"altitude"</span><span class="p">:</span> <span class="mf">33.11732</span><span class="p">,</span>
             <span class="s">"speed"</span><span class="p">:</span> <span class="mf">53.47408048034383</span><span class="p">,</span>
             <span class="s">"direction"</span><span class="p">:</span> <span class="mf">163.28343</span><span class="p">,</span>
-            <span class="s">"h_accuracy"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s">"v_accuracy"</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
-            <span class="s">"acceleration_x"</span><span class="p">:</span> <span class="mf">0.23135915741337032</span><span class="p">,</span>
-            <span class="s">"acceleration_y"</span><span class="p">:</span> <span class="mf">0.6164638302522808</span><span class="p">,</span>
-            <span class="s">"acceleration_z"</span><span class="p">:</span> <span class="mf">0.11871749871078396</span><span class="p">,</span>
-            <span class="s">"mode_detected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s">"point_type"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s">"hAccuracy"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">"vAccuracy"</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+            <span class="s">"accelerationX"</span><span class="p">:</span> <span class="mf">0.23135915741337032</span><span class="p">,</span>
+            <span class="s">"accelerationY"</span><span class="p">:</span> <span class="mf">0.6164638302522808</span><span class="p">,</span>
+            <span class="s">"accelerationZ"</span><span class="p">:</span> <span class="mf">0.11871749871078396</span><span class="p">,</span>
+            <span class="s">"modeDetected"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s">"pointType"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
             <span class="s">"timestamp"</span><span class="p">:</span> <span class="s">"2016-10-29T09:26:03-04:00"</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="o">...</span>
@@ -726,7 +732,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p>Allows application to record collected GPS points to server. This endpoint is shared with updates for survey responses and may be combined to a single request.</p>
+<p>Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined to a single request.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
 
@@ -749,7 +755,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <td>Dictionary containing <code>uuid</code> key and value (TODO: change this)</td>
 </tr>
 </tbody></table>
-<h2 id='updating-prompts'>Updating Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<h2 id='upserting-prompts'>Upserting Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[</span>
@@ -757,8 +763,8 @@ Remember to cache the <code>uuid</code> within the client for future requests.
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.5769640073"</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4868670481"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.5769640073</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.4868670481</span><span class="p">,</span>
             <span class="s">"answer"</span><span class="p">:</span> <span class="s">"Choice 1"</span><span class="p">,</span>
             <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">0</span>
         <span class="p">},</span>
@@ -766,8 +772,8 @@ Remember to cache the <code>uuid</code> within the client for future requests.
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6179342516"</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5205378578"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6179342516</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5205378578</span><span class="p">,</span>
             <span class="s">"answer"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Choice A"</span><span class="p">,</span> <span class="s">"Choice C"</span><span class="p">],</span>
             <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">1</span>
         <span class="p">}</span>
@@ -853,7 +859,7 @@ Remember to cache the <code>uuid</code> within the client for future requests.
 <td><code>uuid</code> for mobile user</td>
 </tr>
 </tbody></table>
-<h2 id='updating-cancelled-prompts'>Updating Cancelled Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+<h2 id='adding-cancelled-prompts'>Adding Cancelled Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">"cancelledPrompts"</span><span class="p">:</span> <span class="p">[</span>
@@ -861,15 +867,15 @@ Remember to cache the <code>uuid</code> within the client for future requests.
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"c1d15413-b33d-4aaa-bf84-762517a3284b"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.5769640073"</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.4868670481"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.5769640073</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.4868670481</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"e2dd9ab2-f859-4d44-b569-6791a4a2ed7b"</span><span class="p">,</span>
             <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
-            <span class="s">"longitude"</span><span class="p">:</span> <span class="s">"-73.6179342516"</span><span class="p">,</span>
-            <span class="s">"latitude"</span><span class="p">:</span> <span class="s">"45.5205378578"</span><span class="p">,</span>
+            <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6179342516</span><span class="p">,</span>
+            <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5205378578</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">],</span>
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"bb9212b8-a608-48a2-962e-3ecb9632a12b"</span><span class="p">,</span>
