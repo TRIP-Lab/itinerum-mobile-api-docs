@@ -47,6 +47,25 @@ parameters = json.dumps(test_data)
 response = requests.post(url, data=parameters)
 ```
 
+A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. *Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.*
+
+The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: `http://<api.root.url>/assets/static/avatars/93jf3.jpg`.
+
+<aside class="notice">
+The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
+
+### HTTP Request
+
+`POST http://<api.root.url>/mobile/v1/create`
+
+### Query Parameters
+
+| Parameter  | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| user       | Dictionary containing `uuid`, `model`, `itinerumVersion`, `os`, `osVersion` |
+| surveyName | Name of survey to associate the user                         |
+
+## Parsing the Survey
 
 > The above command returns JSON structured like this:
 
@@ -206,27 +225,16 @@ response = requests.post(url, data=parameters)
 }
 ```
 
-A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. *Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.*
+###### Survey Questions
 
-The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: `http://<api.root.url>/assets/static/avatars/93jf3.jpg`.
+The `survey` values provides the ordered list of survey questions created using the dashboard's survey builder. The attributes for each survey question are detailed below.
 
-<aside class="notice">
-The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
-
-### HTTP Request
-
-`POST http://<api.root.url>/mobile/v1/create`
-
-### Query Parameters
-
-| Parameter  | Description                                                  |
-| ---------- | ------------------------------------------------------------ |
-| user       | Dictionary containing `uuid`, `model`, `itinerumVersion`, `os`, `osVersion` |
-| surveyName | Name of survey to associate the user                         |
-
-## Parsing the Survey
-
-Each prompt from the survey is associated with a field type to map to the response input box. This is returned as `id` within each item in the **[create a new user](#create-a-new-user)** response's `survey` attribute. 
+| Key       | Value Types  | Description                                                  |
+| --------- | ------------ | ------------------------------------------------------------ |
+| `colName` | *string*     | The column label provided by admin users in the survey builder for output .csv files; currently also used by mobile apps as the question title -- this should like be reconsidered since formatting can be inconsistent |
+| `prompt`  | *string*     | The question string for each survey question                 |
+| `id`      | *integer*    | The generic field type ID as described in the generic or hardcoded fields tables |
+| `fields`  | *dictionary* | A dictionary object containing the `field names` as keys from the generic  or hardcoded fields tables |
 
 ### Generic Fields
 
@@ -242,20 +250,20 @@ Each prompt from the survey is associated with a field type to map to the respon
 
 Fields with an `id` greater or equal to 100 are hardcoded fields and mandatory within every survey. In the future, these will be pre-built, but optional components within the survey builder.
 
-| id   | __hardcoded fields__     | description                             |
-| ---- | ------------------------ | --------------------------------------- |
-| 100  | Gender                   | gender                                  |
-| 101  | Age                      | age                                     |
-| 102  | mode                     | primary mode (unused)                   |
-| 103  | Email                    | email                                   |
-| 104  | member_type              | primary occupartion                     |
-| 105  | location_home            | mark user's home location on map        |
-| 106  | location_study           | mark user's study location on map       |
-| 107  | location_work            | mark user's work location on map        |
-| 108  | travel\_mode\_study      | primary travel mode to study location   |
-| 109  | travel\_mode\_alt\_study | secondary travel mode to study location |
-| 110  | travel\_mode\_work       | primary travel mode to work location    |
-| 111  | travel\_mode\_alt\_work  | secondary travel mode to work location  |
+| id   | __hardcoded colName__ | **field names (placeholder)** | description                             |
+| ---- | --------------------- | ----------------------------- | --------------------------------------- |
+| 100  | Gender                | choices                       | gender                                  |
+| 101  | Age                   | choices                       | age                                     |
+| 102  | mode                  | choices                       | primary mode (unused)                   |
+| 103  | Email                 | choices                       | email                                   |
+| 104  | member_type           | choices                       | primary occupation                      |
+| 105  | location_home         | latitude, longitude           | mark user's home location on map        |
+| 106  | location_study        | latitude, longitude           | mark user's study location on map       |
+| 107  | location_work         | latitude, longitude           | mark user's work location on map        |
+| 108  | travel\_mode\_study   | choices                       | primary travel mode to study location   |
+| 109  | travel_mode_alt_study | choices                       | alternate travel mode to study location |
+| 110  | travel_mode_work      | choices                       | primary travel mode work location       |
+| 111  | travel_mode_alt_work  | choices                       | alternate travel mode to work location  |
 
 
 # Updating the Database
@@ -267,9 +275,7 @@ import json
 
 test_data = {
     "survey": {
-        "checkbox": [
-            "Choice 1"
-        ],
+        "checkbox": ["Choice 1"],
         "dropdown": "Choice 2",
         "Gender": 1,
         "travel_mode_work": 5,
