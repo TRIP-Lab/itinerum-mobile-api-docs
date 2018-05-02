@@ -691,12 +691,12 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </thead><tbody>
 <tr>
-<td>survey</td>
-<td>Dictionary containing the column names from the supplied schema and the user input values</td>
+<td><code>uuid</code></td>
+<td>The user&#39;s cached installation uuid</td>
 </tr>
 <tr>
-<td>uuid</td>
-<td>The user&#39;s cached installation uuid</td>
+<td><code>survey</code></td>
+<td>Dictionary containing the column names from the supplied schema and the user input values</td>
 </tr>
 </tbody></table>
 <h2 id='adding-coordinates'>Adding Coordinates</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
@@ -782,16 +782,20 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </thead><tbody>
 <tr>
-<td>coordinates</td>
-<td>Array of dictionaries containing GPS update information</td>
+<td><code>uuid</code></td>
+<td>The user&#39;s cached installation uuid</td>
 </tr>
 <tr>
-<td>prompts</td>
-<td>(Optional) array of mode prompt responses to record</td>
+<td><code>coordinates</code></td>
+<td>Array of dictionaries containing GPS points information</td>
 </tr>
 <tr>
-<td>user</td>
-<td>Dictionary containing <code>uuid</code> key and value (TODO: change this)</td>
+<td><code>cancelledPrompts</code></td>
+<td>(Optional) array of cancelled prompts dictionaries</td>
+</tr>
+<tr>
+<td><code>prompts</code></td>
+<td>(Optional) array of prompt responses dictionaries</td>
 </tr>
 </tbody></table>
 <h2 id='upserting-prompts'>Upserting Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
@@ -850,15 +854,15 @@ The original implementation of the API implemented and documented key names inco
 <td>UUID for each prompt event, prompts displayed during the same prompt event (i.e., app has detected that user has made a stop) should share the same UUID</td>
 </tr>
 <tr>
-<td><code>prompt_num</code></td>
+<td><code>promptNum</code></td>
 <td>Index (start=0) of the prompt being answered during a prompt event</td>
 </tr>
 <tr>
-<td><code>displayed_at</code></td>
+<td><code>displayedAt</code></td>
 <td>IS08601 representation of datetime when app created prompt event</td>
 </tr>
 <tr>
-<td><code>recorded_at</code></td>
+<td><code>recordedAt</code></td>
 <td>ISO8601 representation of datetime when user answered prompt event</td>
 </tr>
 <tr>
@@ -895,11 +899,11 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 <tr>
 <td><code>cancelledPrompts</code></td>
-<td>(Optional) array of dictionaries containing collected cancelled prompts</td>
+<td>(Optional) array of cancelled prompts dictionaries</td>
 </tr>
 <tr>
 <td><code>coordinates</code></td>
-<td>(Optional) array of dictionaries containing GPS update information</td>
+<td>(Optional) array of dictionaries containing GPS points information</td>
 </tr>
 </tbody></table>
 <h2 id='adding-cancelled-prompts'>Adding Cancelled Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
@@ -949,12 +953,20 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </thead><tbody>
 <tr>
-<td>cancelledPrompts</td>
-<td>Array of dictionaries containing timestamp and location of cancelled prompt</td>
+<td><code>uuid</code></td>
+<td><code>uuid</code> for mobile user</td>
 </tr>
 <tr>
-<td>uuid</td>
-<td><code>uuid</code> for mobile user</td>
+<td><code>cancelledPrompts</code></td>
+<td>Array of cancelled prompts dictionaries</td>
+</tr>
+<tr>
+<td><code>coordinates</code></td>
+<td>(Optional) array of dictionaries containing GPS points information</td>
+</tr>
+<tr>
+<td><code>prompts</code></td>
+<td>(Optional) array of prompt responses dictionaries</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
