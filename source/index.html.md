@@ -338,10 +338,10 @@ This endpoint is shared with updates for coordinates, prompts, and cancelled pro
 
 ### Query Parameters
 
-| Parameter | Description                              |
-| --------- | ---------------------------------------- |
-| survey    | Dictionary containing the column names from the supplied schema and the user input values |
-| uuid      | The user's cached installation uuid      |
+| Parameter | Description                                                  |
+| --------- | ------------------------------------------------------------ |
+| `uuid`    | The user's cached installation uuid                          |
+| `survey`  | Dictionary containing the column names from the supplied schema and the user input values |
 
 ## Adding Coordinates
 
@@ -428,11 +428,12 @@ Allows application to send recorded GPS points to the server. This endpoint is s
 `POST http://<api.root.url>/mobile/v1/update`
 
 
-| Parameter   | Description                              |
-| ----------- | ---------------------------------------- |
-| coordinates | Array of dictionaries containing GPS update information |
-| prompts     | (Optional) array of mode prompt responses to record |
-| user        | Dictionary containing `uuid` key and value (TODO: change this) |
+| Parameter          | Description                                             |
+| ------------------ | ------------------------------------------------------- |
+| `uuid`             | The user's cached installation uuid                     |
+| `coordinates`      | Array of dictionaries containing GPS points information |
+| `cancelledPrompts` | (Optional) array of cancelled prompts dictionaries      |
+| `prompts`          | (Optional) array of prompt responses dictionaries       |
 
 
 ## Upserting Prompts
@@ -486,15 +487,15 @@ response = requests.post(update_url, data=parameters)
 
 This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
 
-| Parameter      | Description                                                  |
-| -------------- | ------------------------------------------------------------ |
-| `uuid`         | UUID for each prompt event, prompts displayed during the same prompt event (i.e., app has detected that user has made a stop) should share the same UUID |
-| `prompt_num`   | Index (start=0) of the prompt being answered during a prompt event |
-| `displayed_at` | IS08601 representation of datetime when app created prompt event |
-| `recorded_at`  | ISO8601 representation of datetime when user answered prompt event |
-| `longitude`    | Longitude of where prompt event was created                  |
-| `latitude`     | Latitude of where prompt event was created                   |
-| `answer`       | List of plain-text strings for the user's prompt response    |
+| Parameter     | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `uuid`        | UUID for each prompt event, prompts displayed during the same prompt event (i.e., app has detected that user has made a stop) should share the same UUID |
+| `promptNum`   | Index (start=0) of the prompt being answered during a prompt event |
+| `displayedAt` | IS08601 representation of datetime when app created prompt event |
+| `recordedAt`  | ISO8601 representation of datetime when user answered prompt event |
+| `longitude`   | Longitude of where prompt event was created                  |
+| `latitude`    | Latitude of where prompt event was created                   |
+| `answer`      | List of plain-text strings for the user's prompt response    |
 
 Updated prompts may be resubmitted with the same format as long as the UUID remains consistent with the originally submitted prompt.
 
@@ -505,8 +506,8 @@ Updated prompts may be resubmitted with the same format as long as the UUID rema
 | ------------------ | ------------------------------------------------------------ |
 | `uuid`             | `uuid` for mobile user (different from prompt `uuid` above)  |
 | `prompts`          | Array of user's prompt responses                             |
-| `cancelledPrompts` | (Optional) array of dictionaries containing collected cancelled prompts |
-| `coordinates`      | (Optional) array of dictionaries containing GPS update information |
+| `cancelledPrompts` | (Optional) array of cancelled prompts dictionaries           |
+| `coordinates`      | (Optional) array of dictionaries containing GPS points information |
 
 ## Adding Cancelled Prompts
 
@@ -558,7 +559,9 @@ This endpoint records times when a user is prompted about a trip end, but choose
 `POST http://<api.root.url>/mobile/v1/update`
 
 
-| Parameter        | Description                              |
-| ---------------- | ---------------------------------------- |
-| cancelledPrompts | Array of dictionaries containing timestamp and location of cancelled prompt |
-| uuid             | `uuid` for mobile user                   |
+| Parameter          | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `uuid`             | `uuid` for mobile user                                       |
+| `cancelledPrompts` | Array of cancelled prompts dictionaries                      |
+| `coordinates`      | (Optional) array of dictionaries containing GPS points information |
+| `prompts`          | (Optional) array of prompt responses dictionaries            |
