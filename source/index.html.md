@@ -349,7 +349,6 @@ This endpoint is shared with updates for coordinates, prompts, and cancelled pro
 import requests
 
 test_data = {
-    "prompts": [],
     "uuid": "04399688-f7aa-4e7d-aeda-a54de210d843",
     "coordinates": [
         {
@@ -422,7 +421,7 @@ response = requests.post(update_url, data=parameters)
 
 ```
 
-Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined to a single request.
+Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined into a single request.
 
 ### HTTP Request
 
@@ -445,8 +444,8 @@ test_data = {
     "prompts": [
         {
             "uuid": "0dd86866-9e00-474f-a24b-103431254726",
-            "displayed_at": "2017-04-27T08:37:03-04:00",
-            "recorded_at": "2017-04-27T08:37:03-04:00",
+            "displayedAt": "2017-04-27T08:37:03-04:00",
+            "recordedAt": "2017-04-27T08:37:03-04:00",
             "longitude": -73.5769640073,
             "latitude": 45.4868670481,
             "answer": "Choice 1",
@@ -454,12 +453,12 @@ test_data = {
         },
         {
             "uuid": "0dd86866-9e00-474f-a24b-103431254726",
-            "displayed_at": "2017-04-28T07:24:25-04:00",
-            "recorded_at": "2017-04-28T07:24:25-04:00",
+            "displayedAt": "2017-04-28T07:24:25-04:00",
+            "recordedAt": "2017-04-28T07:24:25-04:00",
             "longitude": -73.6179342516,
             "latitude": 45.5205378578,
             "answer": ["Choice A", "Choice C"],
-            "prompt_num": 1
+            "promptNum": 1
         }
     ],
     "uuid": "bb9212b8-a608-48a2-962e-3ecb9632a12b",
@@ -487,26 +486,27 @@ response = requests.post(update_url, data=parameters)
 
 This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
 
-| Parameter    | Description                                                  |
-| ------------ | ------------------------------------------------------------ |
-| uuid         | UUID for each prompt event, prompts displayed at during the same notification should share the same UUID |
-| prompt_num   | Index (start=0) of the prompt being answered within an event's set |
-| displayed_at | IS08601 representation of datetime when app created prompt event |
-| recorded_at  | ISO8601 representation of datetime when user answered prompt event |
-| longitude    | Longitude of where prompt event was created                  |
-| latitude     | Latitude of where prompt event was created                   |
-| answer       | List of plain-text strings for the user's prompt response    |
+| Parameter      | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `uuid`         | UUID for each prompt event, prompts displayed during the same prompt event (i.e., app has detected that user has made a stop) should share the same UUID |
+| `prompt_num`   | Index (start=0) of the prompt being answered during a prompt event |
+| `displayed_at` | IS08601 representation of datetime when app created prompt event |
+| `recorded_at`  | ISO8601 representation of datetime when user answered prompt event |
+| `longitude`    | Longitude of where prompt event was created                  |
+| `latitude`     | Latitude of where prompt event was created                   |
+| `answer`       | List of plain-text strings for the user's prompt response    |
 
 Updated prompts may be resubmitted with the same format as long as the UUID remains consistent with the originally submitted prompt.
 
 `POST http://<api.root.url>/mobile/v1/update`
 
 
-| Parameter   | Description                              |
-| ----------- | ---------------------------------------- |
-| coordinates | (Optional) array of dictionaries containing GPS update informationgitlab |
-| prompts     | Array of mode prompt responses to record |
-| uuid        | `uuid` for mobile user                   |
+| Parameter          | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `uuid`             | `uuid` for mobile user (different from prompt `uuid` above)  |
+| `prompts`          | Array of user's prompt responses                             |
+| `cancelledPrompts` | (Optional) array of dictionaries containing collected cancelled prompts |
+| `coordinates`      | (Optional) array of dictionaries containing GPS update information |
 
 ## Adding Cancelled Prompts
 
@@ -517,15 +517,15 @@ test_data = {
     "cancelledPrompts": [
         {
             "uuid": "c1d15413-b33d-4aaa-bf84-762517a3284b",
-            "displayed_at": "2017-04-27T08:37:03-04:00",
-            "cancelled_at": "2017-04-27T08:37:03-04:00",
+            "displayedAt": "2017-04-27T08:37:03-04:00",
+            "cancelledAt": "2017-04-27T08:37:03-04:00",
             "longitude": -73.5769640073,
             "latitude": 45.4868670481,
         },
         {
             "uuid": "e2dd9ab2-f859-4d44-b569-6791a4a2ed7b",
-            "displayed_at": "2017-04-28T07:24:25-04:00",
-            "cancelled_at": "2017-04-28T07:24:25-04:00",
+            "displayedAt": "2017-04-28T07:24:25-04:00",
+            "cancelledAt": "2017-04-28T07:24:25-04:00",
             "longitude": -73.6179342516,
             "latitude": 45.5205378578,
         }
@@ -550,7 +550,7 @@ response = requests.post(cancelled_prompts_url, data=parameters)
 }
 ```
 
-This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts can be upgraded by submitting an answered prompt set with the same UUID.
+This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts will be upgraded automatically by submitting an answered prompt set with the same UUID.
 
 
 ### HTTP Request
