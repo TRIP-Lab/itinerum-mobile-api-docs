@@ -702,7 +702,6 @@ The original implementation of the API implemented and documented key names inco
 <h2 id='adding-coordinates'>Adding Coordinates</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">test_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[],</span>
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"04399688-f7aa-4e7d-aeda-a54de210d843"</span><span class="p">,</span>
     <span class="s">"coordinates"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
@@ -772,7 +771,7 @@ The original implementation of the API implemented and documented key names inco
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p>Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined to a single request.</p>
+<p>Allows application to send recorded GPS points to the server. This endpoint is shared with updates for survey responses and may be combined into a single request.</p>
 <h3 id='http-request-3'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
 
@@ -801,8 +800,8 @@ The original implementation of the API implemented and documented key names inco
     <span class="s">"prompts"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
-            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
-            <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"displayedAt"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"recordedAt"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.5769640073</span><span class="p">,</span>
             <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.4868670481</span><span class="p">,</span>
             <span class="s">"answer"</span><span class="p">:</span> <span class="s">"Choice 1"</span><span class="p">,</span>
@@ -810,12 +809,12 @@ The original implementation of the API implemented and documented key names inco
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"0dd86866-9e00-474f-a24b-103431254726"</span><span class="p">,</span>
-            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
-            <span class="s">"recorded_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"displayedAt"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"recordedAt"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6179342516</span><span class="p">,</span>
             <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5205378578</span><span class="p">,</span>
             <span class="s">"answer"</span><span class="p">:</span> <span class="p">[</span><span class="s">"Choice A"</span><span class="p">,</span> <span class="s">"Choice C"</span><span class="p">],</span>
-            <span class="s">"prompt_num"</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="s">"promptNum"</span><span class="p">:</span> <span class="mi">1</span>
         <span class="p">}</span>
     <span class="p">],</span>
     <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"bb9212b8-a608-48a2-962e-3ecb9632a12b"</span><span class="p">,</span>
@@ -847,31 +846,31 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </thead><tbody>
 <tr>
-<td>uuid</td>
-<td>UUID for each prompt event, prompts displayed at during the same notification should share the same UUID</td>
+<td><code>uuid</code></td>
+<td>UUID for each prompt event, prompts displayed during the same prompt event (i.e., app has detected that user has made a stop) should share the same UUID</td>
 </tr>
 <tr>
-<td>prompt_num</td>
-<td>Index (start=0) of the prompt being answered within an event&#39;s set</td>
+<td><code>prompt_num</code></td>
+<td>Index (start=0) of the prompt being answered during a prompt event</td>
 </tr>
 <tr>
-<td>displayed_at</td>
+<td><code>displayed_at</code></td>
 <td>IS08601 representation of datetime when app created prompt event</td>
 </tr>
 <tr>
-<td>recorded_at</td>
+<td><code>recorded_at</code></td>
 <td>ISO8601 representation of datetime when user answered prompt event</td>
 </tr>
 <tr>
-<td>longitude</td>
+<td><code>longitude</code></td>
 <td>Longitude of where prompt event was created</td>
 </tr>
 <tr>
-<td>latitude</td>
+<td><code>latitude</code></td>
 <td>Latitude of where prompt event was created</td>
 </tr>
 <tr>
-<td>answer</td>
+<td><code>answer</code></td>
 <td>List of plain-text strings for the user&#39;s prompt response</td>
 </tr>
 </tbody></table>
@@ -887,16 +886,20 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </thead><tbody>
 <tr>
-<td>coordinates</td>
-<td>(Optional) array of dictionaries containing GPS update informationgitlab</td>
+<td><code>uuid</code></td>
+<td><code>uuid</code> for mobile user (different from prompt <code>uuid</code> above)</td>
 </tr>
 <tr>
-<td>prompts</td>
-<td>Array of mode prompt responses to record</td>
+<td><code>prompts</code></td>
+<td>Array of user&#39;s prompt responses</td>
 </tr>
 <tr>
-<td>uuid</td>
-<td><code>uuid</code> for mobile user</td>
+<td><code>cancelledPrompts</code></td>
+<td>(Optional) array of dictionaries containing collected cancelled prompts</td>
+</tr>
+<tr>
+<td><code>coordinates</code></td>
+<td>(Optional) array of dictionaries containing GPS update information</td>
 </tr>
 </tbody></table>
 <h2 id='adding-cancelled-prompts'>Adding Cancelled Prompts</h2><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
@@ -905,15 +908,15 @@ The original implementation of the API implemented and documented key names inco
     <span class="s">"cancelledPrompts"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"c1d15413-b33d-4aaa-bf84-762517a3284b"</span><span class="p">,</span>
-            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
-            <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"displayedAt"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
+            <span class="s">"cancelledAt"</span><span class="p">:</span> <span class="s">"2017-04-27T08:37:03-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.5769640073</span><span class="p">,</span>
             <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.4868670481</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
             <span class="s">"uuid"</span><span class="p">:</span> <span class="s">"e2dd9ab2-f859-4d44-b569-6791a4a2ed7b"</span><span class="p">,</span>
-            <span class="s">"displayed_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
-            <span class="s">"cancelled_at"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"displayedAt"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
+            <span class="s">"cancelledAt"</span><span class="p">:</span> <span class="s">"2017-04-28T07:24:25-04:00"</span><span class="p">,</span>
             <span class="s">"longitude"</span><span class="p">:</span> <span class="o">-</span><span class="mf">73.6179342516</span><span class="p">,</span>
             <span class="s">"latitude"</span><span class="p">:</span> <span class="mf">45.5205378578</span><span class="p">,</span>
         <span class="p">}</span>
@@ -935,7 +938,7 @@ The original implementation of the API implemented and documented key names inco
     </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MobileUpdateData"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts can be upgraded by submitting an answered prompt set with the same UUID.</p>
+<p>This endpoint records times when a user is prompted about a trip end, but chooses to continue their trip and dismisses the prompt. Cancelled prompts are mutually exclusive events from answered prompts and should never share UUIDs. Previously submitted cancelled prompts will be upgraded automatically by submitting an answered prompt set with the same UUID.</p>
 <h3 id='http-request-4'>HTTP Request</h3>
 <p><code>POST http://&lt;api.root.url&gt;/mobile/v1/update</code></p>
 
@@ -955,7 +958,7 @@ The original implementation of the API implemented and documented key names inco
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
-<p>Generally the only errors you will receive are 400, 404, 405 or 500. Because the API is overly-forgiving, requests that attempt to create a duplicate user or are otherwise unacceptable will yield 200 indicating it was well formatted but provide a message describing the internal failure.</p>
+<p>Generally the only errors you will receive are <code>400</code>, <code>404</code>, <code>405</code> or <code>500</code>. Because the API is overly-forgiving, requests that attempt to create a duplicate user or are otherwise unacceptable will yield <code>200</code> indicating it was well formatted, but provide a message describing the internal failure.</p>
 
 <table><thead>
 <tr>
