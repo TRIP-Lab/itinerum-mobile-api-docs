@@ -485,7 +485,7 @@ response = requests.post(update_url, data=parameters)
 }
 ```
 
-This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
+Prompt question types use the same [generic fields](#parsing-the-survey) format as the survey questions. Prompt question types can be either dropdown/"select one" (1), checkboxes/"select many" (2), or text box/"unformatted text field" (5). This endpoint is shared with updates for survey responses and may be combined to a single request. Each prompt requires the following information:
 
 | Parameter     | Description                                                  |
 | ------------- | ------------------------------------------------------------ |
