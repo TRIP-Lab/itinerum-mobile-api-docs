@@ -49,7 +49,7 @@ response = requests.post(url, data=parameters)
 
 A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. *Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.*
 
-The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: `http://<api.root.url>/assets/static/avatars/93jf3.jpg`.
+The `avatar` path provides the relative URI of the survey's branding avatar. If no avatar is set, a `null` value will be returned and `defaultAvatar` should be referenced for the default Itinerum badge. In the example above, the full path would then be: `https://<dashboard.url>/assets/static/avatars/93jf3.jpg`.
 
 <aside class="notice">
 The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
