@@ -294,7 +294,7 @@
 </code></pre>
 <p>A new user is created within a survey by supplying a generated UUID to identify the user within the database. This needs to be cached within the app as it is required for subsequent requests to the API. <em>Relying on the mobile application to generate the UUID is a carry-over from a legacy version of the platform, but retained for backwards compatibility. The possibility of UUID collision is exceedingly remote and was not deemed sufficient to change to a server-side implementation.</em></p>
 
-<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: <code>http://&lt;api.root.url&gt;/assets/static/avatars/93jf3.jpg</code>.</p>
+<p>The <code>avatar</code> path provides the relative URI of the survey&#39;s branding avatar. If no avatar is set, a <code>null</code> value will be returned and <code>defaultAvatar</code> should be referenced for the default Itinerum badge. In the example above, the full path would then be: <code>https://&lt;dashboard.url&gt;/assets/static/avatars/93jf3.jpg</code>.</p>
 
 <aside class="notice">
 The original implementation of the API implemented and documented key names inconsistently between camelCase and underscored key names. All network API calls should exclusively use camelCase naming and will be mandatory in future versions of the API. The <code>/mobile/v1</code> version is backwards compatible with both versions, but is deprecated will be disabled once it has been determined all active mobile apps are responding to the upcoming <code>/mobile/v2</code> API.</aside>
